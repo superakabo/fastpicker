@@ -1,3 +1,4 @@
+import 'package:accessibility_tools/accessibility_tools.dart';
 import 'package:flutter/material.dart';
 
 import 'src/fast_picker_scaffold.dart';
@@ -26,9 +27,15 @@ class FastPicker extends StatelessWidget {
           shape: Border(),
         ),
       ),
-      child: FastPickerScaffold(
-        maxSelection: maxSelection,
-        strings: strings,
+      child: AccessibilityTools(
+        minimumTapAreas: const MinimumTapAreas(
+          mobile: 32,
+          desktop: 32,
+        ),
+        child: FastPickerScaffold(
+          maxSelection: maxSelection,
+          strings: strings,
+        ),
       ),
     );
   }

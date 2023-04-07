@@ -25,6 +25,7 @@ class FastPickerScaffold extends HookWidget {
     const duration = Duration(milliseconds: 250);
     const reverseDuration = Duration(milliseconds: 200);
     final selectedAlbumRef = useValueNotifier(AssetPathEntity(id: '', name: ''));
+    final selectedMediaRef = useValueNotifier(<AssetEntity>[]);
 
     final multiSelectController = useAnimationController(
       duration: duration,
@@ -125,6 +126,7 @@ class FastPickerScaffold extends HookWidget {
                 MediaGridView(
                   controller: multiSelectController,
                   selectedAlbumRef: selectedAlbumRef,
+                  selectedMediaRef: selectedMediaRef,
                 ),
                 AlbumListView(
                   albums: albums,
