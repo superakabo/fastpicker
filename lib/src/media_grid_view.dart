@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 import 'selection_indicator.dart';
+import 'video_indicator.dart';
 
 class MediaGridView extends HookWidget {
   final AnimationController controller;
@@ -89,6 +90,7 @@ class _GridRow extends StatelessWidget {
               );
             },
           ),
+          footer: VideoIndicator(mediaAsset),
           child: child!,
         );
       },
