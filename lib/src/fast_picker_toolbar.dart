@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
-import 'package:photo_manager/photo_manager.dart';
 
 import 'album_drawer_button.dart';
+import 'models/album_model.dart';
 import 'multi_select_toggle_button.dart';
 import 'utilities/strings.dart';
 
 class FastPickerToolbar extends StatelessWidget implements PreferredSizeWidget {
   final AnimationController multiSelectController;
   final AnimationController albumController;
-  final ValueNotifier<AssetPathEntity> selectedAlbumRef;
+  final ValueNotifier<AlbumModel> selectedAlbumRef;
   final Strings strings;
   final bool visible;
 

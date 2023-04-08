@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:photo_manager/photo_manager.dart';
 
 import 'linear_sheet.dart';
 import 'utilities/strings.dart';
 
 class MultiSelectBanner extends StatelessWidget {
   final AnimationController controller;
+  final ValueNotifier<List<AssetEntity>> selectedMediaRef;
   final Strings strings;
 
   const MultiSelectBanner({
     required this.controller,
+    required this.selectedMediaRef,
     required this.strings,
     super.key,
   });
@@ -28,17 +31,23 @@ class MultiSelectBanner extends StatelessWidget {
               Expanded(
                 child: Text(strings.addUpTo10PhotosAndVideos),
               ),
-              TextButton(
-                style: TextButton.styleFrom(
-                  elevation: 0,
-                  minimumSize: Size.zero,
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 8,
-                    horizontal: 16,
-                  ),
-                ),
-                onPressed: () {},
+              ValueListenableBuilder<List<AssetEntity>>(
+                valueListenable: selectedMediaRef,
                 child: Text(strings.done),
+                builder: (context, mediaAssets, child) {
+                  return TextButton(
+                    style: TextButton.styleFrom(
+                      elevation: 0,
+                      minimumSize: Size.zero,
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 8,
+                        horizontal: 16,
+                      ),
+                    ),
+                    onPressed: mediaAssets.isEmpty ? null : () {},
+                    child: child!,
+                  );
+                },
               ),
             ],
           ),

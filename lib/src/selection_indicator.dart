@@ -5,13 +5,15 @@ class SelectionIndicator extends StatelessWidget {
   final AlignmentGeometry alignment;
   final EdgeInsetsGeometry margin;
   final bool selected;
+  final int counter;
 
   const SelectionIndicator({
     super.key,
     required this.visible,
     this.margin = const EdgeInsets.only(top: 6, right: 6),
-    this.alignment = AlignmentDirectional.bottomEnd,
+    this.alignment = AlignmentDirectional.topEnd,
     this.selected = false,
+    this.counter = 0,
   });
 
   @override
@@ -20,36 +22,29 @@ class SelectionIndicator extends StatelessWidget {
 
     return Semantics(
       selected: selected,
-      enabled: visible,
-      child: Visibility(
-        visible: visible,
-        child: Align(
-          alignment: alignment,
-          child: Padding(
-            padding: margin,
-            child: SizedBox.square(
-              dimension: 18,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: selected ? theme.colorScheme.primary : Colors.transparent,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white),
-                  boxShadow: const [
-                    BoxShadow(
-                      blurRadius: 0.5,
-                      blurStyle: BlurStyle.outer,
-                    ),
-                  ],
-                ),
-                child: Visibility(
-                  visible: selected,
-                  child: Icon(
-                    Icons.check_rounded,
-                    size: 12,
-                    color: theme.colorScheme.onPrimary,
-                  ),
-                ),
+      child: Align(
+        alignment: alignment,
+        child: AnimatedContainer(
+          width: visible ? 19 : 0,
+          height: visible ? 19 : 0,
+          margin: margin,
+          alignment: Alignment.center,
+          duration: const Duration(milliseconds: 180),
+          decoration: BoxDecoration(
+            color: selected ? theme.colorScheme.primary : Colors.transparent,
+            shape: BoxShape.circle,
+            border: Border.all(color: Colors.white),
+            boxShadow: const [
+              BoxShadow(
+                blurRadius: 0.5,
+                blurStyle: BlurStyle.outer,
               ),
+            ],
+          ),
+          child: Text(
+            selected ? counter.toString() : '',
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: theme.colorScheme.onPrimary,
             ),
           ),
         ),

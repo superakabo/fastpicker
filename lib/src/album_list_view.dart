@@ -1,18 +1,17 @@
-import 'package:fastpicker/src/extensions/asset_path_entity_extension.dart';
 import 'package:fastpicker/src/linear_sheet.dart';
+import 'package:fastpicker/src/models/album_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:photo_manager/photo_manager.dart';
 
-class AlbumListView extends HookWidget {
+class AlbumListView extends StatelessWidget {
   final AnimationController controller;
   final ScrollPhysics? physics;
-  final AsyncSnapshot<List<AssetPathEntity>?> albums;
-  final ValueNotifier<AssetPathEntity> selectedAlbumRef;
+  final ValueNotifier<List<AlbumModel>> albumsRef;
+  final ValueNotifier<AlbumModel> selectedAlbumRef;
 
   const AlbumListView({
     required this.controller,
-    required this.albums,
+    required this.albumsRef,
     required this.selectedAlbumRef,
     this.physics,
     super.key,
@@ -25,21 +24,26 @@ class AlbumListView extends HookWidget {
       heightFactor: 0,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12),
-        child: ListView.separated(
-          physics: physics,
-          itemCount: albums.data?.length ?? 0,
-          itemBuilder: (context, index) {
-            return _AlbumRow(
-              album: albums.data![index],
-              onTap: (album) {
-                selectedAlbumRef.value = album;
-                controller.reverse();
+        child: ValueListenableBuilder<List<AlbumModel>>(
+          valueListenable: albumsRef,
+          builder: (_, albums, __) {
+            return ListView.separated(
+              physics: physics,
+              itemCount: albums.length,
+              itemBuilder: (context, index) {
+                return _AlbumRow(
+                  album: albums[index],
+                  onTap: (album) {
+                    selectedAlbumRef.value = album;
+                    controller.reverse();
+                  },
+                );
               },
-            );
-          },
-          separatorBuilder: (context, index) {
-            return const Padding(
-              padding: EdgeInsets.symmetric(vertical: 6),
+              separatorBuilder: (context, index) {
+                return const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 6),
+                );
+              },
             );
           },
         ),
@@ -49,8 +53,8 @@ class AlbumListView extends HookWidget {
 }
 
 class _AlbumRow extends StatelessWidget {
-  final AssetPathEntity album;
-  final void Function(AssetPathEntity) onTap;
+  final AlbumModel album;
+  final void Function(AlbumModel) onTap;
 
   const _AlbumRow({
     required this.album,
@@ -63,29 +67,18 @@ class _AlbumRow extends StatelessWidget {
       contentPadding: const EdgeInsets.symmetric(horizontal: 12),
       leading: AspectRatio(
         aspectRatio: 1,
-        child: FutureBuilder<AssetEntity?>(
-          future: album.thumbnail,
-          builder: (context, snapshot) {
-            return (snapshot.hasData)
-                ? AssetEntityImage(
-                    snapshot.data!,
-                    isOriginal: false,
-                    fit: BoxFit.cover,
-                  )
-                : const ColoredBox(color: Colors.grey);
-            //TODO: remove [ColoredBox(color: Colors.grey)]
-            // after filtering out empty albums
-          },
-        ),
+        child: (album.thumbnail == null)
+            ? const ColoredBox(color: Colors.grey)
+            : AssetEntityImage(
+                album.thumbnail!,
+                isOriginal: false,
+                fit: BoxFit.cover,
+              ),
+
+        // TODO: remove [ColoredBox(color: Colors.grey)] after filtering out empty albums
       ),
       title: Text(album.name),
-      subtitle: FutureBuilder(
-        initialData: 0,
-        future: album.assetCountAsync,
-        builder: (context, snapshot) {
-          return Text(snapshot.data!.toString());
-        },
-      ),
+      subtitle: Text(album.assetCount.toString()),
       onTap: () => onTap(album),
     );
   }

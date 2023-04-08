@@ -1,44 +1,47 @@
-import 'package:fastpicker/src/extensions/asset_path_entity_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:photo_manager/photo_manager.dart';
 
+import 'models/album_model.dart';
 import 'selection_indicator.dart';
 import 'video_indicator.dart';
 
-class MediaGridView extends HookWidget {
+class MediaGridView extends StatelessWidget {
   final AnimationController controller;
   final ScrollPhysics? physics;
-  final ValueNotifier<AssetPathEntity> selectedAlbumRef;
+  final ValueNotifier<AlbumModel> selectedAlbumRef;
   final ValueNotifier<List<AssetEntity>> selectedMediaRef;
+  final int maxSelection;
 
   const MediaGridView({
     required this.controller,
     required this.selectedAlbumRef,
     required this.selectedMediaRef,
+    required this.maxSelection,
     this.physics,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    final album = useListenable(selectedAlbumRef).value;
-    final mediaCache = useMemoized(() => album.assetEntities, [album]);
-    final mediaAssets = useFuture(mediaCache, initialData: <AssetEntity>[]).data;
-
-    return GridView.builder(
-      physics: physics,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 4,
-        mainAxisSpacing: 1,
-        crossAxisSpacing: 1,
-      ),
-      itemCount: mediaAssets?.length ?? 0,
-      itemBuilder: (context, index) {
-        return _GridRow(
-          controller: controller,
-          selectedMediaRef: selectedMediaRef,
-          mediaAsset: mediaAssets![index],
+    return ValueListenableBuilder<AlbumModel>(
+      valueListenable: selectedAlbumRef,
+      builder: (_, album, __) {
+        return GridView.builder(
+          physics: physics,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 4,
+            mainAxisSpacing: 1,
+            crossAxisSpacing: 1,
+          ),
+          itemCount: album.assets.length,
+          itemBuilder: (context, index) {
+            return _GridRow(
+              controller: controller,
+              selectedMediaRef: selectedMediaRef,
+              mediaAsset: album.assets[index],
+              maxSelection: maxSelection,
+            );
+          },
         );
       },
     );
@@ -49,11 +52,13 @@ class _GridRow extends StatelessWidget {
   final AssetEntity mediaAsset;
   final AnimationController controller;
   final ValueNotifier<List<AssetEntity>> selectedMediaRef;
+  final int maxSelection;
 
   const _GridRow({
     required this.mediaAsset,
     required this.controller,
     required this.selectedMediaRef,
+    required this.maxSelection,
   });
 
   @override
@@ -68,8 +73,9 @@ class _GridRow extends StatelessWidget {
             if (selectedMediaRef.value.contains(mediaAsset)) {
               selectedMediaRef.value.remove(mediaAsset);
               selectedMediaRef.value = List.of(selectedMediaRef.value);
-            } else {
-              selectedMediaRef.value = [mediaAsset, ...selectedMediaRef.value];
+            } else if (selectedMediaRef.value.length < maxSelection) {
+              selectedMediaRef.value.add(mediaAsset);
+              selectedMediaRef.value = List.of(selectedMediaRef.value);
             }
           },
           child: AssetEntityImage(
@@ -85,8 +91,9 @@ class _GridRow extends StatelessWidget {
             valueListenable: selectedMediaRef,
             builder: (context, selectedMedia, child) {
               return SelectionIndicator(
-                visible: controller.value == 1,
+                visible: (controller.value == 1),
                 selected: selectedMedia.contains(mediaAsset),
+                counter: selectedMedia.indexOf(mediaAsset) + 1,
               );
             },
           ),

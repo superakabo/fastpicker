@@ -18,6 +18,7 @@ class LimitedPermissionBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final navigator = Navigator.of(context);
 
     return LinearSheet(
       controller: controller,
@@ -49,16 +50,22 @@ class LimitedPermissionBanner extends StatelessWidget {
                       message: Text(strings.manageAccessToYourPhotosAndVideos),
                       actions: [
                         CupertinoActionSheetAction(
-                          onPressed: PhotoManager.presentLimited,
+                          onPressed: () {
+                            navigator.pop();
+                            PhotoManager.presentLimited();
+                          },
                           child: Text(strings.selectMorePhotos),
                         ),
                         CupertinoActionSheetAction(
-                          onPressed: PhotoManager.openSetting,
+                          onPressed: () {
+                            navigator.pop();
+                            PhotoManager.openSetting();
+                          },
                           child: Text(strings.changeSettings),
                         ),
                       ],
                       cancelButton: CupertinoActionSheetAction(
-                        onPressed: Navigator.of(context).pop,
+                        onPressed: navigator.pop,
                         child: Text(strings.cancel),
                       ),
                     );

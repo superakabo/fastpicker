@@ -1,4 +1,5 @@
 import 'package:fastpicker/src/album_list_view.dart';
+import 'package:fastpicker/src/extensions/asset_path_entity_extension.dart';
 import 'package:fastpicker/src/limited_permission_banner.dart';
 import 'package:fastpicker/src/permission_bottom_sheet.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:photo_manager/photo_manager.dart';
 
 import 'fast_picker_toolbar.dart';
 import 'media_grid_view.dart';
+import 'models/album_model.dart';
 import 'muti_select_banner.dart';
 import 'utilities/strings.dart';
 
@@ -24,7 +26,9 @@ class FastPickerScaffold extends HookWidget {
   Widget build(BuildContext context) {
     const duration = Duration(milliseconds: 250);
     const reverseDuration = Duration(milliseconds: 200);
-    final selectedAlbumRef = useValueNotifier(AssetPathEntity(id: '', name: ''));
+
+    final albumsRef = useValueNotifier(<AlbumModel>[]);
+    final selectedAlbumRef = useValueNotifier(AlbumModel());
     final selectedMediaRef = useValueNotifier(<AssetEntity>[]);
 
     final multiSelectController = useAnimationController(
@@ -59,19 +63,40 @@ class FastPickerScaffold extends HookWidget {
       return (isAuthorized || isLimited);
     }, [permission]);
 
-    /// Mark: load photos and videos
-    final albums = useFuture<List<AssetPathEntity>?>(
-      useMemoized(() async {
-        if (hasPermission) {
-          final albums = await PhotoManager.getAssetPathList();
-          if (albums.isNotEmpty) selectedAlbumRef.value = albums.first;
-          return albums;
+    /// Mark: load photos and videos in albums
+    Future<void> loadAlbums() async {
+      // TODO: filter out empty albums when this issue is resolved
+      // https://github.com/fluttercandies/flutter_photo_manager/issues/910
+
+      albumsRef.value.clear();
+      final assetPathEntities = await PhotoManager.getAssetPathList();
+
+      for (var assetPathEntity in assetPathEntities) {
+        albumsRef.value.add(AlbumModel.raw(
+          id: assetPathEntity.id,
+          name: assetPathEntity.name,
+          albumType: assetPathEntity.albumType,
+          lastModified: assetPathEntity.lastModified,
+          type: assetPathEntity.type,
+          thumbnail: await assetPathEntity.thumbnail,
+          assets: await assetPathEntity.assetEntities,
+          assetCount: await assetPathEntity.assetCountAsync,
+        ));
+
+        if (assetPathEntity.id == selectedAlbumRef.value.id) {
+          selectedAlbumRef.value = selectedAlbumRef.value;
+        } else {
+          selectedAlbumRef.value = albumsRef.value.first;
         }
-        return null;
-        // TODO: filter out empty albums when this issue is resolved
-        ///  https://github.com/fluttercandies/flutter_photo_manager/issues/910
-      }, [hasPermission]),
-    );
+      }
+
+      albumsRef.value = List.of(albumsRef.value);
+    }
+
+    useEffect(() {
+      if (hasPermission) loadAlbums();
+      return;
+    }, [hasPermission]);
 
     /// Mark: show permission state message
     useEffect(() {
@@ -100,6 +125,31 @@ class FastPickerScaffold extends HookWidget {
       return;
     }, [permission]);
 
+    /// Mark: clear selected media assets when
+    /// multi-select mode is turned-off.
+    useEffect(() {
+      void callback(AnimationStatus status) {
+        if (status == AnimationStatus.reverse) {
+          selectedMediaRef.value = [];
+        }
+      }
+
+      multiSelectController.addStatusListener(callback);
+      return () => multiSelectController.removeStatusListener(callback);
+    }, const []);
+
+    /// Mark: monitor albums for changes and update the
+    /// media assets within them.
+    useEffect(() {
+      void callback(v) => loadAlbums();
+      PhotoManager.addChangeCallback(callback);
+      PhotoManager.startChangeNotify();
+      return () {
+        PhotoManager.removeChangeCallback(callback);
+        PhotoManager.stopChangeNotify();
+      };
+    }, const []);
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -127,9 +177,10 @@ class FastPickerScaffold extends HookWidget {
                   controller: multiSelectController,
                   selectedAlbumRef: selectedAlbumRef,
                   selectedMediaRef: selectedMediaRef,
+                  maxSelection: maxSelection,
                 ),
                 AlbumListView(
-                  albums: albums,
+                  albumsRef: albumsRef,
                   selectedAlbumRef: selectedAlbumRef,
                   controller: albumController,
                 ),
@@ -139,6 +190,7 @@ class FastPickerScaffold extends HookWidget {
           MultiSelectBanner(
             strings: strings,
             controller: multiSelectController,
+            selectedMediaRef: selectedMediaRef,
           ),
         ],
       ),

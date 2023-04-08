@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:photo_manager/photo_manager.dart';
 
+import 'models/album_model.dart';
 import 'utilities/strings.dart';
 
 class AlbumDrawerButton extends StatelessWidget {
   final AnimationController controller;
-  final ValueNotifier<AssetPathEntity> selectedAlbumRef;
+  final ValueNotifier<AlbumModel> selectedAlbumRef;
   final Strings strings;
 
   const AlbumDrawerButton({
@@ -50,7 +50,7 @@ class AlbumDrawerButton extends StatelessWidget {
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: ValueListenableBuilder<AssetPathEntity>(
+                child: ValueListenableBuilder<AlbumModel>(
                   valueListenable: selectedAlbumRef,
                   builder: (context, album, child) {
                     return Row(

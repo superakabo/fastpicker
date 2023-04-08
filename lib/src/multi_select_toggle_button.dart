@@ -52,7 +52,7 @@ class MultiSelectToggleButton extends StatelessWidget {
         return Material(
           shape: const CircleBorder(),
           color: theme.colorScheme.tertiaryContainer.withOpacity(
-            math.max(0.3, (controller.value / 1)),
+            math.max(0.2, (controller.value / 1)),
           ),
           child: child,
         );
