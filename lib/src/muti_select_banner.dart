@@ -7,17 +7,21 @@ import 'utilities/strings.dart';
 class MultiSelectBanner extends StatelessWidget {
   final AnimationController controller;
   final ValueNotifier<List<AssetEntity>> selectedMediaRef;
+  final void Function(List<AssetEntity>)? onComplete;
   final Strings strings;
 
   const MultiSelectBanner({
     required this.controller,
     required this.selectedMediaRef,
     required this.strings,
+    required this.onComplete,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
+    final navigator = Navigator.of(context);
+
     return LinearSheet(
       elevation: 8,
       controller: controller,
@@ -44,7 +48,12 @@ class MultiSelectBanner extends StatelessWidget {
                         horizontal: 16,
                       ),
                     ),
-                    onPressed: mediaAssets.isEmpty ? null : () {},
+                    onPressed: mediaAssets.isEmpty
+                        ? null
+                        : () {
+                            onComplete?.call(mediaAssets);
+                            if (navigator.canPop()) navigator.pop(mediaAssets);
+                          },
                     child: child!,
                   );
                 },

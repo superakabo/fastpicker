@@ -15,10 +15,12 @@ import 'utilities/strings.dart';
 class FastPickerScaffold extends HookWidget {
   final Strings strings;
   final int maxSelection;
+  final void Function(List<AssetEntity>)? onComplete;
 
   const FastPickerScaffold({
     required this.strings,
     required this.maxSelection,
+    required this.onComplete,
     super.key,
   });
 
@@ -194,6 +196,7 @@ class FastPickerScaffold extends HookWidget {
             strings: strings,
             controller: multiSelectController,
             selectedMediaRef: selectedMediaRef,
+            onComplete: onComplete,
           ),
         ],
       ),

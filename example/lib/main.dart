@@ -19,9 +19,16 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.light,
         ),
       ),
-      home: Builder(builder: (context) {
-        return FastPicker(theme: Theme.of(context));
-      }),
+      home: Builder(
+        builder: (context) {
+          return FastPicker(
+            theme: Theme.of(context),
+            onComplete: (assets) {
+              print(assets.length);
+            },
+          );
+        },
+      ),
     );
   }
 }
