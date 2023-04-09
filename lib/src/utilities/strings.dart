@@ -11,6 +11,7 @@ class Strings {
   final String done;
   final String addUpTo10PhotosAndVideos;
   final String loading;
+  final String removePhoto;
 
   const Strings({
     this.selectMedia = 'Select Media',
@@ -25,5 +26,6 @@ class Strings {
     this.done = 'Done',
     this.addUpTo10PhotosAndVideos = 'Add up to 10 photos and videos.',
     this.loading = 'Loading\u2026',
+    this.removePhoto = 'Remove photo',
   });
 }

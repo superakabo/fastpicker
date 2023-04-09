@@ -32,17 +32,11 @@ class FastPicker extends StatelessWidget {
           shape: Border(),
         ),
       ),
-      child: AccessibilityTools(
-        minimumTapAreas: const MinimumTapAreas(
-          mobile: 32,
-          desktop: 32,
-        ),
-        child: FastPickerScaffold(
-          maxSelection: maxSelection,
-          onComplete: onComplete,
-          physics: physics,
-          strings: strings,
-        ),
+      child: FastPickerScaffold(
+        maxSelection: maxSelection,
+        onComplete: onComplete,
+        physics: physics,
+        strings: strings,
       ),
     );
   }

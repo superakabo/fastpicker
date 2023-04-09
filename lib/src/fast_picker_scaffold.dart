@@ -24,7 +24,7 @@ class FastPickerScaffold extends HookWidget {
     required this.onComplete,
     required this.physics,
     super.key,
-  });
+  }) : assert(maxSelection > 0, 'max selection must be greater than or equal to 1');
 
   @override
   Widget build(BuildContext context) {
@@ -202,6 +202,7 @@ class FastPickerScaffold extends HookWidget {
             controller: multiSelectController,
             selectedMediaRef: selectedMediaRef,
             onComplete: onComplete,
+            physics: physics,
           ),
         ],
       ),
