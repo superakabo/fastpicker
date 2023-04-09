@@ -13,7 +13,7 @@ class AlbumListView extends StatelessWidget {
     required this.controller,
     required this.albumsRef,
     required this.selectedAlbumRef,
-    this.physics,
+    required this.physics,
     super.key,
   });
 

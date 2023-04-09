@@ -9,6 +9,7 @@ class FastPicker extends StatelessWidget {
   final ThemeData theme;
   final Strings strings;
   final int maxSelection;
+  final ScrollPhysics? physics;
   final void Function(List<AssetEntity>)? onComplete;
 
   const FastPicker({
@@ -16,6 +17,7 @@ class FastPicker extends StatelessWidget {
     this.strings = const Strings(),
     this.maxSelection = 10,
     this.onComplete,
+    this.physics,
     super.key,
   });
 
@@ -38,6 +40,7 @@ class FastPicker extends StatelessWidget {
         child: FastPickerScaffold(
           maxSelection: maxSelection,
           onComplete: onComplete,
+          physics: physics,
           strings: strings,
         ),
       ),

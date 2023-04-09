@@ -10,6 +10,7 @@ class MediaGridView extends StatelessWidget {
   final ScrollPhysics? physics;
   final ValueNotifier<AlbumModel> selectedAlbumRef;
   final ValueNotifier<List<AssetEntity>> selectedMediaRef;
+  final void Function(List<AssetEntity>)? onComplete;
   final int maxSelection;
 
   const MediaGridView({
@@ -17,7 +18,8 @@ class MediaGridView extends StatelessWidget {
     required this.selectedAlbumRef,
     required this.selectedMediaRef,
     required this.maxSelection,
-    this.physics,
+    required this.onComplete,
+    required this.physics,
     super.key,
   });
 
@@ -40,6 +42,7 @@ class MediaGridView extends StatelessWidget {
               selectedMediaRef: selectedMediaRef,
               mediaAsset: album.assets[index],
               maxSelection: maxSelection,
+              onComplete: onComplete,
             );
           },
         );
@@ -52,6 +55,7 @@ class _GridRow extends StatelessWidget {
   final AssetEntity mediaAsset;
   final AnimationController controller;
   final ValueNotifier<List<AssetEntity>> selectedMediaRef;
+  final void Function(List<AssetEntity>)? onComplete;
   final int maxSelection;
 
   const _GridRow({
@@ -59,6 +63,7 @@ class _GridRow extends StatelessWidget {
     required this.controller,
     required this.selectedMediaRef,
     required this.maxSelection,
+    required this.onComplete,
   });
 
   @override
@@ -70,6 +75,12 @@ class _GridRow extends StatelessWidget {
         child: InkWell(
           excludeFromSemantics: true,
           onTap: () {
+            if (maxSelection == 1) {
+              final navigator = Navigator.of(context);
+              if (navigator.canPop()) navigator.pop([mediaAsset]);
+              return onComplete?.call([mediaAsset]);
+            }
+
             if (selectedMediaRef.value.contains(mediaAsset)) {
               selectedMediaRef.value.remove(mediaAsset);
               selectedMediaRef.value = List.of(selectedMediaRef.value);

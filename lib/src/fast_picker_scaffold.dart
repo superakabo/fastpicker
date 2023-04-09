@@ -15,12 +15,14 @@ import 'utilities/strings.dart';
 class FastPickerScaffold extends HookWidget {
   final Strings strings;
   final int maxSelection;
+  final ScrollPhysics? physics;
   final void Function(List<AssetEntity>)? onComplete;
 
   const FastPickerScaffold({
     required this.strings,
     required this.maxSelection,
     required this.onComplete,
+    required this.physics,
     super.key,
   });
 
@@ -183,11 +185,14 @@ class FastPickerScaffold extends HookWidget {
                   selectedAlbumRef: selectedAlbumRef,
                   selectedMediaRef: selectedMediaRef,
                   maxSelection: maxSelection,
+                  onComplete: onComplete,
+                  physics: physics,
                 ),
                 AlbumListView(
                   albumsRef: albumsRef,
                   selectedAlbumRef: selectedAlbumRef,
                   controller: albumController,
+                  physics: physics,
                 ),
               ],
             ),
