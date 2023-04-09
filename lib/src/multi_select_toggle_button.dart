@@ -2,14 +2,17 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+import 'models/album_model.dart';
 import 'utilities/strings.dart';
 
 class MultiSelectToggleButton extends StatelessWidget {
   final AnimationController controller;
+  final ValueNotifier<AlbumModel> selectedAlbumRef;
   final Strings strings;
 
   const MultiSelectToggleButton({
     required this.controller,
+    required this.selectedAlbumRef,
     required this.strings,
     super.key,
   });
@@ -39,10 +42,12 @@ class MultiSelectToggleButton extends StatelessWidget {
               child: Icon(Icons.collections, size: 16),
             ),
             onTap: () {
-              if (controller.status == AnimationStatus.dismissed) {
-                controller.forward();
-              } else if (controller.status == AnimationStatus.completed) {
-                controller.reverse();
+              if (selectedAlbumRef.value.assetCount > 0) {
+                if (controller.status == AnimationStatus.dismissed) {
+                  controller.forward();
+                } else if (controller.status == AnimationStatus.completed) {
+                  controller.reverse();
+                }
               }
             },
           ),

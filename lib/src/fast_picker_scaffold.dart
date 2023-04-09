@@ -138,17 +138,20 @@ class FastPickerScaffold extends HookWidget {
       return () => multiSelectController.removeStatusListener(callback);
     }, const []);
 
-    /// Mark: monitor albums for changes and update the
+    /// Mark: monitor changes in albums and update the
     /// media assets within them.
     useEffect(() {
-      void callback(v) => loadAlbums();
-      PhotoManager.addChangeCallback(callback);
-      PhotoManager.startChangeNotify();
-      return () {
-        PhotoManager.removeChangeCallback(callback);
-        PhotoManager.stopChangeNotify();
-      };
-    }, const []);
+      if (hasPermission) {
+        void callback(_) => loadAlbums();
+        PhotoManager.addChangeCallback(callback);
+        PhotoManager.startChangeNotify();
+        return () {
+          PhotoManager.removeChangeCallback(callback);
+          PhotoManager.stopChangeNotify();
+        };
+      }
+      return null;
+    }, [hasPermission]);
 
     return Scaffold(
       appBar: AppBar(

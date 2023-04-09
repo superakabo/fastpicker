@@ -31,13 +31,14 @@ class FastPickerToolbar extends StatelessWidget implements PreferredSizeWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             AlbumDrawerButton(
-              controller: albumController,
               strings: strings,
+              controller: albumController,
               selectedAlbumRef: selectedAlbumRef,
             ),
             MultiSelectToggleButton(
-              controller: multiSelectController,
               strings: strings,
+              controller: multiSelectController,
+              selectedAlbumRef: selectedAlbumRef,
             ),
           ],
         ),
