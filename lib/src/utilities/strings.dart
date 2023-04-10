@@ -12,6 +12,10 @@ class Strings {
   final String addUpTo10PhotosAndVideos;
   final String loading;
   final String removePhoto;
+  final String pleaseAllowAccessToYourPhotos;
+  final String allowAccess;
+  final String accessToYourPhotosIsRestricted;
+  final String youCanAlwaysChangeThisInYourDeviceSettings;
 
   const Strings({
     this.selectMedia = 'Select Media',
@@ -27,5 +31,10 @@ class Strings {
     this.addUpTo10PhotosAndVideos = 'Add up to 10 photos and videos.',
     this.loading = 'Loading\u2026',
     this.removePhoto = 'Remove photo',
+    this.pleaseAllowAccessToYourPhotos = 'Please Allow Access to your Photos',
+    this.allowAccess = 'Allow Access',
+    this.accessToYourPhotosIsRestricted =
+        'Access to your Photos is restricted. Contact your parent or guardian to undo the restriction.',
+    this.youCanAlwaysChangeThisInYourDeviceSettings = 'You can always change this in your device settings.',
   });
 }

@@ -106,16 +106,12 @@ class FastPickerScaffold extends HookWidget {
     useEffect(() {
       switch (permission) {
         case PermissionState.limited:
-          permissionLimitedController
-            ..reverse()
-            ..forward();
+          permissionLimitedController.forward();
           break;
 
         case PermissionState.denied:
         case PermissionState.restricted:
-          permissionController
-            ..reverse()
-            ..forward();
+          permissionController.forward();
           break;
 
         case PermissionState.authorized:
@@ -207,7 +203,9 @@ class FastPickerScaffold extends HookWidget {
         ],
       ),
       bottomSheet: PermissionBottomSheet(
-        permissionController,
+        strings: strings,
+        permission: permission,
+        controller: permissionController,
       ),
     );
   }
