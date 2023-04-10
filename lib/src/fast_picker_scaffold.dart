@@ -16,11 +16,13 @@ class FastPickerScaffold extends HookWidget {
   final Strings strings;
   final int maxSelection;
   final ScrollPhysics? physics;
+  final List<AssetEntity> selectedAssets;
   final void Function(List<AssetEntity>)? onComplete;
 
   const FastPickerScaffold({
     required this.strings,
     required this.maxSelection,
+    required this.selectedAssets,
     required this.onComplete,
     required this.physics,
     super.key,
@@ -33,7 +35,7 @@ class FastPickerScaffold extends HookWidget {
 
     final albumsRef = useValueNotifier(<AlbumModel>[]);
     final selectedAlbumRef = useValueNotifier(AlbumModel());
-    final selectedMediaRef = useValueNotifier(<AssetEntity>[]);
+    final selectedMediaRef = useValueNotifier(selectedAssets);
 
     final multiSelectController = useAnimationController(
       duration: duration,
