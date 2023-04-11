@@ -41,4 +41,49 @@ class Strings {
     this.noMedia = 'No Media',
     this.yourPhotosAndVideosWillAppear = 'Your photos and videos will appear here.',
   });
+
+  Strings copyWith({
+    String? selectMedia,
+    String? limitedPermissionMessage,
+    String? manage,
+    String? cancel,
+    String? changeSettings,
+    String? selectMorePhotos,
+    String? manageAccessToYourPhotosAndVideos,
+    String? toggleMultipleSelectionMode,
+    String? toggleAlbumDrawer,
+    String? done,
+    String? addUpTo10PhotosAndVideos,
+    String? loading,
+    String? removePhoto,
+    String? pleaseAllowAccessToYourPhotos,
+    String? allowAccess,
+    String? accessToYourPhotosIsRestricted,
+    String? youCanAlwaysChangeThisInYourDeviceSettings,
+    String? noMedia,
+    String? yourPhotosAndVideosWillAppear,
+  }) {
+    return Strings(
+      selectMedia: selectMedia ?? this.selectMedia,
+      limitedPermissionMessage: limitedPermissionMessage ?? this.limitedPermissionMessage,
+      manage: manage ?? this.manage,
+      cancel: cancel ?? this.cancel,
+      changeSettings: changeSettings ?? this.changeSettings,
+      selectMorePhotos: selectMorePhotos ?? this.selectMorePhotos,
+      manageAccessToYourPhotosAndVideos: manageAccessToYourPhotosAndVideos ?? this.manageAccessToYourPhotosAndVideos,
+      toggleMultipleSelectionMode: toggleMultipleSelectionMode ?? this.toggleMultipleSelectionMode,
+      toggleAlbumDrawer: toggleAlbumDrawer ?? this.toggleAlbumDrawer,
+      done: done ?? this.done,
+      addUpTo10PhotosAndVideos: addUpTo10PhotosAndVideos ?? this.addUpTo10PhotosAndVideos,
+      loading: loading ?? this.loading,
+      removePhoto: removePhoto ?? this.removePhoto,
+      pleaseAllowAccessToYourPhotos: pleaseAllowAccessToYourPhotos ?? this.pleaseAllowAccessToYourPhotos,
+      allowAccess: allowAccess ?? this.allowAccess,
+      accessToYourPhotosIsRestricted: accessToYourPhotosIsRestricted ?? this.accessToYourPhotosIsRestricted,
+      youCanAlwaysChangeThisInYourDeviceSettings:
+          youCanAlwaysChangeThisInYourDeviceSettings ?? this.youCanAlwaysChangeThisInYourDeviceSettings,
+      noMedia: noMedia ?? this.noMedia,
+      yourPhotosAndVideosWillAppear: yourPhotosAndVideosWillAppear ?? this.yourPhotosAndVideosWillAppear,
+    );
+  }
 }

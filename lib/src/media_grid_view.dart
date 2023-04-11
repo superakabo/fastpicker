@@ -34,7 +34,9 @@ class MediaGridView extends StatelessWidget {
       builder: (_, album, __) {
         return Visibility(
           visible: (album.name.isNotEmpty && album.assetCount > 0),
-          replacement: NoMediaView(strings: strings),
+          replacement: NoMediaView(
+            strings: strings,
+          ),
           child: GridView.builder(
             physics: physics,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
