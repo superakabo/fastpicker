@@ -35,7 +35,7 @@ class FastPickerScaffold extends HookWidget {
 
     final albumsRef = useValueNotifier(<AlbumModel>[]);
     final selectedAlbumRef = useValueNotifier(AlbumModel());
-    final selectedMediaRef = useValueNotifier(selectedAssets);
+    final selectedMediaRef = useValueNotifier(List.of(selectedAssets));
 
     final multiSelectController = useAnimationController(
       duration: duration,
