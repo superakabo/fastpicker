@@ -10,7 +10,7 @@ import 'fast_picker_toolbar.dart';
 import 'media_grid_view.dart';
 import 'models/album_model.dart';
 import 'muti_select_banner.dart';
-import 'utilities/strings.dart';
+import 'utilities/fast_picker_strings.dart';
 
 class FastPickerScaffold extends HookWidget {
   final FastPickerStrings strings;

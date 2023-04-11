@@ -3,7 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import 'models/album_model.dart';
-import 'utilities/strings.dart';
+import 'utilities/fast_picker_strings.dart';
 
 class MultiSelectToggleButton extends StatelessWidget {
   final AnimationController controller;

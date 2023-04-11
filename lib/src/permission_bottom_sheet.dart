@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 import 'linear_sheet.dart';
-import 'utilities/strings.dart';
+import 'utilities/fast_picker_strings.dart';
 
 class PermissionBottomSheet extends StatelessWidget {
   final FastPickerStrings strings;

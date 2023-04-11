@@ -4,7 +4,7 @@ import 'package:photo_manager/photo_manager.dart';
 
 import 'models/album_model.dart';
 import 'selection_indicator.dart';
-import 'utilities/strings.dart';
+import 'utilities/fast_picker_strings.dart';
 import 'video_indicator.dart';
 
 class MediaGridView extends StatelessWidget {

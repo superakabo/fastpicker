@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'album_drawer_button.dart';
 import 'models/album_model.dart';
 import 'multi_select_toggle_button.dart';
-import 'utilities/strings.dart';
+import 'utilities/fast_picker_strings.dart';
 
 class FastPickerToolbar extends StatelessWidget implements PreferredSizeWidget {
   final AnimationController multiSelectController;

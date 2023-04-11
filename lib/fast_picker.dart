@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 import 'src/fast_picker_scaffold.dart';
-import 'src/utilities/strings.dart';
+import 'src/utilities/fast_picker_strings.dart';
+
+export 'src/extensions/asset_path_entity_extension.dart';
+export 'src/models/album_model.dart';
+export 'src/utilities/fast_picker_strings.dart';
 
 class FastPicker extends StatelessWidget {
   final ThemeData theme;

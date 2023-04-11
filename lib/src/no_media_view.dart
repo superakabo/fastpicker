@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'utilities/strings.dart';
+import 'utilities/fast_picker_strings.dart';
 
 class NoMediaView extends StatelessWidget {
   final FastPickerStrings strings;
