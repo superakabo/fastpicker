@@ -185,6 +185,7 @@ class FastPickerScaffold extends HookWidget {
                   maxSelection: maxSelection,
                   onComplete: onComplete,
                   physics: physics,
+                  strings: strings,
                 ),
                 AlbumListView(
                   albumsRef: albumsRef,

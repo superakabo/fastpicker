@@ -16,6 +16,8 @@ class Strings {
   final String allowAccess;
   final String accessToYourPhotosIsRestricted;
   final String youCanAlwaysChangeThisInYourDeviceSettings;
+  final String noMedia;
+  final String yourPhotosAndVideosWillAppear;
 
   const Strings({
     this.selectMedia = 'Select Media',
@@ -36,5 +38,7 @@ class Strings {
     this.accessToYourPhotosIsRestricted =
         'Access to your Photos is restricted. Contact your parent or guardian to undo the restriction.',
     this.youCanAlwaysChangeThisInYourDeviceSettings = 'You can always change this in your device settings.',
+    this.noMedia = 'No Media',
+    this.yourPhotosAndVideosWillAppear = 'Your photos and videos will appear here.',
   });
 }

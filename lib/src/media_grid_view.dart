@@ -1,8 +1,10 @@
+import 'package:fastpicker/src/no_media_view.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 import 'models/album_model.dart';
 import 'selection_indicator.dart';
+import 'utilities/strings.dart';
 import 'video_indicator.dart';
 
 class MediaGridView extends StatelessWidget {
@@ -10,6 +12,7 @@ class MediaGridView extends StatelessWidget {
   final ScrollPhysics? physics;
   final ValueNotifier<AlbumModel> selectedAlbumRef;
   final ValueNotifier<List<AssetEntity>> selectedMediaRef;
+  final Strings strings;
   final void Function(List<AssetEntity>)? onComplete;
   final int maxSelection;
 
@@ -20,6 +23,7 @@ class MediaGridView extends StatelessWidget {
     required this.maxSelection,
     required this.onComplete,
     required this.physics,
+    required this.strings,
     super.key,
   });
 
@@ -28,23 +32,27 @@ class MediaGridView extends StatelessWidget {
     return ValueListenableBuilder<AlbumModel>(
       valueListenable: selectedAlbumRef,
       builder: (_, album, __) {
-        return GridView.builder(
-          physics: physics,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 4,
-            mainAxisSpacing: 1,
-            crossAxisSpacing: 1,
+        return Visibility(
+          visible: (album.name.isNotEmpty && album.assetCount > 0),
+          replacement: NoMediaView(strings: strings),
+          child: GridView.builder(
+            physics: physics,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 4,
+              mainAxisSpacing: 1,
+              crossAxisSpacing: 1,
+            ),
+            itemCount: album.assets.length,
+            itemBuilder: (context, index) {
+              return _GridRow(
+                controller: controller,
+                selectedMediaRef: selectedMediaRef,
+                mediaAsset: album.assets[index],
+                maxSelection: maxSelection,
+                onComplete: onComplete,
+              );
+            },
           ),
-          itemCount: album.assets.length,
-          itemBuilder: (context, index) {
-            return _GridRow(
-              controller: controller,
-              selectedMediaRef: selectedMediaRef,
-              mediaAsset: album.assets[index],
-              maxSelection: maxSelection,
-              onComplete: onComplete,
-            );
-          },
         );
       },
     );
