@@ -1,4 +1,4 @@
-import 'package:fastpicker/main.dart';
+import 'package:fastpicker/fast_picker.dart';
 import 'package:flutter/material.dart';
 
 void main() {
