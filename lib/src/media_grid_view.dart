@@ -12,7 +12,7 @@ class MediaGridView extends StatelessWidget {
   final ScrollPhysics? physics;
   final ValueNotifier<AlbumModel> selectedAlbumRef;
   final ValueNotifier<List<AssetEntity>> selectedMediaRef;
-  final Strings strings;
+  final FastPickerStrings strings;
   final void Function(List<AssetEntity>)? onComplete;
   final int maxSelection;
 

@@ -7,7 +7,7 @@ import 'utilities/strings.dart';
 class AlbumDrawerButton extends StatelessWidget {
   final AnimationController controller;
   final ValueNotifier<AlbumModel> selectedAlbumRef;
-  final Strings strings;
+  final FastPickerStrings strings;
 
   const AlbumDrawerButton({
     required this.controller,

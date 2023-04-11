@@ -5,7 +5,7 @@ import 'linear_sheet.dart';
 import 'utilities/strings.dart';
 
 class PermissionBottomSheet extends StatelessWidget {
-  final Strings strings;
+  final FastPickerStrings strings;
   final PermissionState? permission;
   final AnimationController controller;
 
@@ -46,7 +46,7 @@ class _PermissionStateInfo extends StatelessWidget {
   factory _PermissionStateInfo({
     required ThemeData theme,
     required PermissionState? permission,
-    required Strings strings,
+    required FastPickerStrings strings,
   }) {
     switch (permission) {
       case PermissionState.restricted:
@@ -57,7 +57,7 @@ class _PermissionStateInfo extends StatelessWidget {
     }
   }
 
-  factory _PermissionStateInfo.denied(ThemeData theme, Strings strings) {
+  factory _PermissionStateInfo.denied(ThemeData theme, FastPickerStrings strings) {
     return _PermissionStateInfo._(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -104,7 +104,7 @@ class _PermissionStateInfo extends StatelessWidget {
     );
   }
 
-  factory _PermissionStateInfo.restricted(ThemeData theme, Strings strings) {
+  factory _PermissionStateInfo.restricted(ThemeData theme, FastPickerStrings strings) {
     return _PermissionStateInfo._(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),

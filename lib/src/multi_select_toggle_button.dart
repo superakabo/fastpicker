@@ -8,7 +8,7 @@ import 'utilities/strings.dart';
 class MultiSelectToggleButton extends StatelessWidget {
   final AnimationController controller;
   final ValueNotifier<AlbumModel> selectedAlbumRef;
-  final Strings strings;
+  final FastPickerStrings strings;
 
   const MultiSelectToggleButton({
     required this.controller,

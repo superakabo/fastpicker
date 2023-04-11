@@ -6,7 +6,7 @@ import 'src/utilities/strings.dart';
 
 class FastPicker extends StatelessWidget {
   final ThemeData theme;
-  final Strings strings;
+  final FastPickerStrings strings;
   final int maxSelection;
   final ScrollPhysics? physics;
   final List<AssetEntity> selectedAssets;
@@ -14,7 +14,7 @@ class FastPicker extends StatelessWidget {
 
   const FastPicker({
     required this.theme,
-    this.strings = const Strings(),
+    this.strings = const FastPickerStrings(),
     this.maxSelection = 10,
     this.selectedAssets = const [],
     this.onComplete,

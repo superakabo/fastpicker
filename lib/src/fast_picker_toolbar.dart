@@ -9,7 +9,7 @@ class FastPickerToolbar extends StatelessWidget implements PreferredSizeWidget {
   final AnimationController multiSelectController;
   final AnimationController albumController;
   final ValueNotifier<AlbumModel> selectedAlbumRef;
-  final Strings strings;
+  final FastPickerStrings strings;
   final bool visible;
 
   const FastPickerToolbar({

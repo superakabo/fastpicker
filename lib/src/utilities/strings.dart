@@ -1,4 +1,4 @@
-class Strings {
+class FastPickerStrings {
   final String selectMedia;
   final String limitedPermissionMessage;
   final String manage;
@@ -19,7 +19,7 @@ class Strings {
   final String noMedia;
   final String yourPhotosAndVideosWillAppear;
 
-  const Strings({
+  const FastPickerStrings({
     this.selectMedia = 'Select Media',
     this.limitedPermissionMessage = 'You\'ve allowed access to a selected number of photos and videos.',
     this.manage = 'Manage',
@@ -42,7 +42,7 @@ class Strings {
     this.yourPhotosAndVideosWillAppear = 'Your photos and videos will appear here.',
   });
 
-  Strings copyWith({
+  FastPickerStrings copyWith({
     String? selectMedia,
     String? limitedPermissionMessage,
     String? manage,
@@ -63,7 +63,7 @@ class Strings {
     String? noMedia,
     String? yourPhotosAndVideosWillAppear,
   }) {
-    return Strings(
+    return FastPickerStrings(
       selectMedia: selectMedia ?? this.selectMedia,
       limitedPermissionMessage: limitedPermissionMessage ?? this.limitedPermissionMessage,
       manage: manage ?? this.manage,

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'utilities/strings.dart';
 
 class NoMediaView extends StatelessWidget {
-  final Strings strings;
+  final FastPickerStrings strings;
 
   const NoMediaView({
     required this.strings,

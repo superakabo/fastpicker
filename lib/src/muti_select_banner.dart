@@ -9,7 +9,7 @@ class MultiSelectBanner extends StatelessWidget {
   final ValueNotifier<List<AssetEntity>> selectedMediaRef;
   final void Function(List<AssetEntity>)? onComplete;
   final ScrollPhysics? physics;
-  final Strings strings;
+  final FastPickerStrings strings;
 
   const MultiSelectBanner({
     required this.strings,
@@ -86,7 +86,7 @@ class SelectedAssetsPreview extends StatelessWidget {
   final ScrollPhysics? physics;
   final List<AssetEntity> mediaAssets;
   final void Function(int) onPressed;
-  final Strings strings;
+  final FastPickerStrings strings;
 
   const SelectedAssetsPreview({
     required this.physics,

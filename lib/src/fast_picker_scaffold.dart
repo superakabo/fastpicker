@@ -13,7 +13,7 @@ import 'muti_select_banner.dart';
 import 'utilities/strings.dart';
 
 class FastPickerScaffold extends HookWidget {
-  final Strings strings;
+  final FastPickerStrings strings;
   final int maxSelection;
   final ScrollPhysics? physics;
   final List<AssetEntity> selectedAssets;

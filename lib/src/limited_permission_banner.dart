@@ -6,7 +6,7 @@ import 'linear_sheet.dart';
 import 'utilities/strings.dart';
 
 class LimitedPermissionBanner extends StatelessWidget {
-  final Strings strings;
+  final FastPickerStrings strings;
   final AnimationController controller;
 
   const LimitedPermissionBanner({
