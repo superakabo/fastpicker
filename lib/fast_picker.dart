@@ -4,7 +4,6 @@ import 'package:photo_manager/photo_manager.dart';
 import 'src/fast_picker_scaffold.dart';
 import 'src/utilities/fast_picker_strings.dart';
 
-export 'src/models/album_model.dart';
 export 'src/utilities/fast_picker_strings.dart';
 export 'package:photo_manager/photo_manager.dart' show AssetEntity, AssetPathEntity;
 

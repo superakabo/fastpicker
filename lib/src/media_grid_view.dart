@@ -85,7 +85,7 @@ class _GridRow extends StatelessWidget {
         child: InkWell(
           excludeFromSemantics: true,
           onTap: () {
-            if (maxSelection == 1) {
+            if (maxSelection == 1 || controller.value == 0) {
               final navigator = Navigator.of(context);
               if (navigator.canPop()) navigator.pop([mediaAsset]);
               return onComplete?.call([mediaAsset]);
