@@ -86,9 +86,10 @@ class _GridRow extends StatelessWidget {
           excludeFromSemantics: true,
           onTap: () {
             if (maxSelection == 1 || controller.value == 0) {
+              onComplete?.call([mediaAsset]);
               final navigator = Navigator.of(context);
               if (navigator.canPop()) navigator.pop([mediaAsset]);
-              return onComplete?.call([mediaAsset]);
+              return;
             }
 
             if (selectedMediaRef.value.contains(mediaAsset)) {
