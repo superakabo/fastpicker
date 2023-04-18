@@ -36,6 +36,7 @@ class FastPickerScaffold extends HookWidget {
     final albumsRef = useValueNotifier(<AlbumModel>[]);
     final selectedAlbumRef = useValueNotifier(AlbumModel());
     final selectedMediaRef = useValueNotifier(List.of(selectedAssets));
+    final mediaCountRef = useValueNotifier(-1);
 
     final multiSelectController = useAnimationController(
       duration: duration,
@@ -89,10 +90,9 @@ class FastPickerScaffold extends HookWidget {
           assetCount: await assetPathEntity.assetCountAsync,
         ));
 
-        if (assetPathEntity.id == selectedAlbumRef.value.id) {
-          selectedAlbumRef.value = selectedAlbumRef.value;
-        } else {
+        if (assetPathEntity.id != selectedAlbumRef.value.id) {
           selectedAlbumRef.value = albumsRef.value.first;
+          mediaCountRef.value = albumsRef.value.first.assetCount;
         }
       }
 
@@ -163,6 +163,7 @@ class FastPickerScaffold extends HookWidget {
           strings: strings,
           visible: hasPermission,
           selectedAlbumRef: selectedAlbumRef,
+          mediaCountRef: mediaCountRef,
           albumController: albumController,
           multiSelectController: multiSelectController,
         ),
