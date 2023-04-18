@@ -18,6 +18,7 @@ class FastPickerScaffold extends HookWidget {
   final int maxSelection;
   final ScrollPhysics? physics;
   final List<String> selectedAssetIds;
+  final Widget? closeButton;
   final void Function(List<AssetEntity>)? onComplete;
 
   const FastPickerScaffold({
@@ -26,11 +27,14 @@ class FastPickerScaffold extends HookWidget {
     required this.selectedAssetIds,
     required this.onComplete,
     required this.physics,
+    required this.closeButton,
     super.key,
   }) : assert(maxSelection > 0, 'max selection must be greater than or equal to 1');
 
   @override
   Widget build(BuildContext context) {
+    final navigator = Navigator.of(context);
+
     const duration = Duration(milliseconds: 250);
     const reverseDuration = Duration(milliseconds: 200);
 
@@ -174,6 +178,7 @@ class FastPickerScaffold extends HookWidget {
 
     return Scaffold(
       appBar: AppBar(
+        leading: closeButton ?? CloseButton(onPressed: () => navigator.pop(selectedMediaRef.value)),
         centerTitle: true,
         title: Text(strings.selectMedia),
         bottom: FastPickerToolbar(
