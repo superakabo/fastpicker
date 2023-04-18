@@ -6,12 +6,12 @@ import 'package:photo_manager/photo_manager.dart';
 class AlbumListView extends StatelessWidget {
   final AnimationController controller;
   final ScrollPhysics? physics;
-  final List<AlbumModel> albums;
+  final ValueNotifier<List<AlbumModel>> albumsRef;
   final ValueNotifier<AlbumModel> selectedAlbumRef;
 
   const AlbumListView({
     required this.controller,
-    required this.albums,
+    required this.albumsRef,
     required this.selectedAlbumRef,
     required this.physics,
     super.key,
@@ -24,21 +24,26 @@ class AlbumListView extends StatelessWidget {
       heightFactor: 0,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12),
-        child: ListView.separated(
-          physics: physics,
-          itemCount: albums.length,
-          itemBuilder: (context, index) {
-            return _AlbumRow(
-              album: albums[index],
-              onTap: (album) {
-                selectedAlbumRef.value = album;
-                controller.reverse();
+        child: ValueListenableBuilder<List<AlbumModel>>(
+          valueListenable: albumsRef,
+          builder: (_, albums, __) {
+            return ListView.separated(
+              physics: physics,
+              itemCount: albums.length,
+              itemBuilder: (context, index) {
+                return _AlbumRow(
+                  album: albums[index],
+                  onTap: (album) {
+                    selectedAlbumRef.value = album;
+                    controller.reverse();
+                  },
+                );
               },
-            );
-          },
-          separatorBuilder: (context, index) {
-            return const Padding(
-              padding: EdgeInsets.symmetric(vertical: 6),
+              separatorBuilder: (context, index) {
+                return const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 6),
+                );
+              },
             );
           },
         ),

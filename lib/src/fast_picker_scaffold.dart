@@ -30,13 +30,14 @@ class FastPickerScaffold extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('reloaded');
     const duration = Duration(milliseconds: 250);
     const reverseDuration = Duration(milliseconds: 200);
 
-    final albumsRef = useState(<AlbumModel>[]);
+    final albumsRef = useValueNotifier(<AlbumModel>[]);
     final selectedAlbumRef = useValueNotifier(AlbumModel());
     final selectedMediaRef = useValueNotifier(List.of(selectedAssets));
-    final mediaCountRef = useValueNotifier(-1);
+    final isLoadingRef = useValueNotifier(false);
 
     final multiSelectController = useAnimationController(
       duration: duration,
@@ -75,6 +76,7 @@ class FastPickerScaffold extends HookWidget {
       // TODO: filter out empty albums when this issue is resolved
       // https://github.com/fluttercandies/flutter_photo_manager/issues/910
 
+      isLoadingRef.value = true;
       albumsRef.value.clear();
       final assetPathEntities = await PhotoManager.getAssetPathList();
 
@@ -92,11 +94,11 @@ class FastPickerScaffold extends HookWidget {
 
         if (assetPathEntity.id != selectedAlbumRef.value.id) {
           selectedAlbumRef.value = albumsRef.value.first;
-          mediaCountRef.value = albumsRef.value.first.assetCount;
         }
       }
 
       albumsRef.value = List.of(albumsRef.value);
+      isLoadingRef.value = false;
     }
 
     /// Mark: load albums when permission is granted or limited (iOS)
@@ -162,8 +164,9 @@ class FastPickerScaffold extends HookWidget {
         title: Text(strings.selectMedia),
         bottom: FastPickerToolbar(
           strings: strings,
-          visible: hasPermission && albumsRef.value.isNotEmpty,
+          visible: hasPermission,
           selectedAlbumRef: selectedAlbumRef,
+          isLoadingRef: isLoadingRef,
           albumController: albumController,
           multiSelectController: multiSelectController,
         ),
@@ -183,13 +186,14 @@ class FastPickerScaffold extends HookWidget {
                   controller: multiSelectController,
                   selectedAlbumRef: selectedAlbumRef,
                   selectedMediaRef: selectedMediaRef,
+                  isLoadingRef: isLoadingRef,
                   maxSelection: maxSelection,
                   onComplete: onComplete,
                   physics: physics,
                   strings: strings,
                 ),
                 AlbumListView(
-                  albums: albumsRef.value,
+                  albumsRef: albumsRef,
                   selectedAlbumRef: selectedAlbumRef,
                   controller: albumController,
                   physics: physics,

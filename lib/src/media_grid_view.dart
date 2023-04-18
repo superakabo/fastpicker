@@ -12,6 +12,7 @@ class MediaGridView extends StatelessWidget {
   final ScrollPhysics? physics;
   final ValueNotifier<AlbumModel> selectedAlbumRef;
   final ValueNotifier<List<AssetEntity>> selectedMediaRef;
+  final ValueNotifier<bool> isLoadingRef;
   final FastPickerStrings strings;
   final void Function(List<AssetEntity>)? onComplete;
   final int maxSelection;
@@ -20,6 +21,7 @@ class MediaGridView extends StatelessWidget {
     required this.controller,
     required this.selectedAlbumRef,
     required this.selectedMediaRef,
+    required this.isLoadingRef,
     required this.maxSelection,
     required this.onComplete,
     required this.physics,
@@ -29,6 +31,43 @@ class MediaGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ValueListenableBuilder<AlbumModel>(
+      valueListenable: selectedAlbumRef,
+      builder: (_, album, __) {
+        return ValueListenableBuilder<bool>(
+          valueListenable: isLoadingRef,
+          builder: (context, isLoading, child) {
+            if (!isLoading && album.assetCount > 0) {
+              return GridView.builder(
+                physics: physics,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4,
+                  mainAxisSpacing: 1,
+                  crossAxisSpacing: 1,
+                ),
+                itemCount: album.assets.length,
+                itemBuilder: (context, index) {
+                  return _GridRow(
+                    controller: controller,
+                    selectedMediaRef: selectedMediaRef,
+                    mediaAsset: album.assets[index],
+                    maxSelection: maxSelection,
+                    onComplete: onComplete,
+                  );
+                },
+              );
+            }
+
+            if (!isLoading && album.assetCount == 0) {
+              return NoMediaView(strings: strings);
+            }
+
+            return const SizedBox.shrink();
+          },
+        );
+      },
+    );
+
     return ValueListenableBuilder<AlbumModel>(
       valueListenable: selectedAlbumRef,
       builder: (_, album, __) {
