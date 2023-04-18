@@ -32,7 +32,7 @@ class MediaGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ValueListenableBuilder<AlbumModel>(
+    return ValueListenableBuilder<AlbumModel>(
       valueListenable: selectedAlbumRef,
       builder: (_, album, __) {
         return ValueListenableBuilder<LoadingStatus>(
@@ -65,36 +65,6 @@ class MediaGridView extends StatelessWidget {
                 return const SizedBox.shrink();
             }
           },
-        );
-      },
-    );
-
-    return ValueListenableBuilder<AlbumModel>(
-      valueListenable: selectedAlbumRef,
-      builder: (_, album, __) {
-        return Visibility(
-          visible: (album.assetCount > 0),
-          replacement: NoMediaView(
-            strings: strings,
-          ),
-          child: GridView.builder(
-            physics: physics,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 4,
-              mainAxisSpacing: 1,
-              crossAxisSpacing: 1,
-            ),
-            itemCount: album.assets.length,
-            itemBuilder: (context, index) {
-              return _GridRow(
-                controller: controller,
-                selectedMediaRef: selectedMediaRef,
-                mediaAsset: album.assets[index],
-                maxSelection: maxSelection,
-                onComplete: onComplete,
-              );
-            },
-          ),
         );
       },
     );
