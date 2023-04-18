@@ -41,7 +41,8 @@ class MediaGridView extends StatelessWidget {
             switch (loadingStatus) {
               case LoadingStatus.complete:
                 return (album.assetCount == 0)
-                    ? GridView.builder(
+                    ? NoMediaView(strings: strings)
+                    : GridView.builder(
                         physics: physics,
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 4,
@@ -58,8 +59,7 @@ class MediaGridView extends StatelessWidget {
                             onComplete: onComplete,
                           );
                         },
-                      )
-                    : NoMediaView(strings: strings);
+                      );
 
               default:
                 return const SizedBox.shrink();
