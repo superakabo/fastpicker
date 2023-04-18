@@ -33,8 +33,6 @@ class FastPickerScaffold extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final navigator = Navigator.of(context);
-
     const duration = Duration(milliseconds: 250);
     const reverseDuration = Duration(milliseconds: 200);
 
@@ -176,9 +174,25 @@ class FastPickerScaffold extends HookWidget {
       return null;
     }, [hasPermission]);
 
+    /// Mark: Adds a leading widget to the AppBar.
+    /// It defaults to the the CloseButton widget;
+    Widget? leadingWidget() {
+      if (closeButton != null) return closeButton!;
+
+      final navigator = Navigator.of(context);
+      if (navigator.canPop()) {
+        return CloseButton(onPressed: () {
+          onComplete?.call(selectedMediaRef.value);
+          navigator.pop(selectedMediaRef.value);
+        });
+      }
+
+      return null;
+    }
+
     return Scaffold(
       appBar: AppBar(
-        leading: closeButton ?? CloseButton(onPressed: () => navigator.pop(selectedMediaRef.value)),
+        leading: leadingWidget(),
         centerTitle: true,
         title: Text(strings.selectMedia),
         bottom: FastPickerToolbar(
