@@ -1,3 +1,4 @@
+import 'package:fastpicker/src/utilities/enums/loading_status.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'album_drawer_button.dart';
@@ -9,7 +10,7 @@ class FastPickerToolbar extends StatelessWidget implements PreferredSizeWidget {
   final AnimationController multiSelectController;
   final AnimationController albumController;
   final ValueNotifier<AlbumModel> selectedAlbumRef;
-  final ValueNotifier<bool> isLoadingRef;
+  final ValueNotifier<LoadingStatus> loadingStatusRef;
   final FastPickerStrings strings;
   final bool visible;
 
@@ -17,7 +18,7 @@ class FastPickerToolbar extends StatelessWidget implements PreferredSizeWidget {
     required this.albumController,
     required this.multiSelectController,
     required this.selectedAlbumRef,
-    required this.isLoadingRef,
+    required this.loadingStatusRef,
     required this.visible,
     required this.strings,
     super.key,
@@ -36,7 +37,7 @@ class FastPickerToolbar extends StatelessWidget implements PreferredSizeWidget {
               strings: strings,
               controller: albumController,
               selectedAlbumRef: selectedAlbumRef,
-              isLoadingRef: isLoadingRef,
+              loadingStatusRef: loadingStatusRef,
             ),
             MultiSelectToggleButton(
               strings: strings,

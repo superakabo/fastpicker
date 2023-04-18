@@ -1,4 +1,5 @@
 import 'package:fastpicker/src/no_media_view.dart';
+import 'package:fastpicker/src/utilities/enums/loading_status.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 
@@ -12,7 +13,7 @@ class MediaGridView extends StatelessWidget {
   final ScrollPhysics? physics;
   final ValueNotifier<AlbumModel> selectedAlbumRef;
   final ValueNotifier<List<AssetEntity>> selectedMediaRef;
-  final ValueNotifier<bool> isLoadingRef;
+  final ValueNotifier<LoadingStatus> loadingStatusRef;
   final FastPickerStrings strings;
   final void Function(List<AssetEntity>)? onComplete;
   final int maxSelection;
@@ -21,7 +22,7 @@ class MediaGridView extends StatelessWidget {
     required this.controller,
     required this.selectedAlbumRef,
     required this.selectedMediaRef,
-    required this.isLoadingRef,
+    required this.loadingStatusRef,
     required this.maxSelection,
     required this.onComplete,
     required this.physics,
@@ -34,35 +35,35 @@ class MediaGridView extends StatelessWidget {
     ValueListenableBuilder<AlbumModel>(
       valueListenable: selectedAlbumRef,
       builder: (_, album, __) {
-        return ValueListenableBuilder<bool>(
-          valueListenable: isLoadingRef,
-          builder: (context, isLoading, child) {
-            if (!isLoading && album.assetCount > 0) {
-              return GridView.builder(
-                physics: physics,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
-                  mainAxisSpacing: 1,
-                  crossAxisSpacing: 1,
-                ),
-                itemCount: album.assets.length,
-                itemBuilder: (context, index) {
-                  return _GridRow(
-                    controller: controller,
-                    selectedMediaRef: selectedMediaRef,
-                    mediaAsset: album.assets[index],
-                    maxSelection: maxSelection,
-                    onComplete: onComplete,
-                  );
-                },
-              );
-            }
+        return ValueListenableBuilder<LoadingStatus>(
+          valueListenable: loadingStatusRef,
+          builder: (context, loadingStatus, child) {
+            switch (loadingStatus) {
+              case LoadingStatus.complete:
+                return (album.assetCount == 0)
+                    ? GridView.builder(
+                        physics: physics,
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 4,
+                          mainAxisSpacing: 1,
+                          crossAxisSpacing: 1,
+                        ),
+                        itemCount: album.assets.length,
+                        itemBuilder: (context, index) {
+                          return _GridRow(
+                            controller: controller,
+                            selectedMediaRef: selectedMediaRef,
+                            mediaAsset: album.assets[index],
+                            maxSelection: maxSelection,
+                            onComplete: onComplete,
+                          );
+                        },
+                      )
+                    : NoMediaView(strings: strings);
 
-            if (!isLoading && album.assetCount == 0) {
-              return NoMediaView(strings: strings);
+              default:
+                return const SizedBox.shrink();
             }
-
-            return const SizedBox.shrink();
           },
         );
       },

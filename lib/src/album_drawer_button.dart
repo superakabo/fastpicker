@@ -1,3 +1,4 @@
+import 'package:fastpicker/src/utilities/enums/loading_status.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -7,13 +8,13 @@ import 'utilities/fast_picker_strings.dart';
 class AlbumDrawerButton extends StatelessWidget {
   final AnimationController controller;
   final ValueNotifier<AlbumModel> selectedAlbumRef;
-  final ValueNotifier<bool> isLoadingRef;
+  final ValueNotifier<LoadingStatus> loadingStatusRef;
   final FastPickerStrings strings;
 
   const AlbumDrawerButton({
     required this.controller,
     required this.selectedAlbumRef,
-    required this.isLoadingRef,
+    required this.loadingStatusRef,
     required this.strings,
     super.key,
   });
@@ -52,12 +53,12 @@ class AlbumDrawerButton extends StatelessWidget {
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: ValueListenableBuilder<bool>(
-                  valueListenable: isLoadingRef,
-                  builder: (context, isLoading, _) {
+                child: ValueListenableBuilder<LoadingStatus>(
+                  valueListenable: loadingStatusRef,
+                  builder: (context, loadingStatus, _) {
                     return _DrawerButtonChild(
                       controller: controller,
-                      isLoading: isLoading,
+                      loadingStatus: loadingStatus,
                       selectedAlbumRef: selectedAlbumRef,
                       strings: strings,
                     );
@@ -73,13 +74,13 @@ class AlbumDrawerButton extends StatelessWidget {
 }
 
 class _DrawerButtonChild extends StatelessWidget {
-  final bool isLoading;
+  final LoadingStatus loadingStatus;
   final FastPickerStrings strings;
   final ValueNotifier<AlbumModel> selectedAlbumRef;
   final AnimationController controller;
 
   const _DrawerButtonChild({
-    required this.isLoading,
+    required this.loadingStatus,
     required this.selectedAlbumRef,
     required this.strings,
     required this.controller,
@@ -98,7 +99,7 @@ class _DrawerButtonChild extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 4, right: 8),
               child: Text(
-                (isLoading) ? strings.loading : album.name,
+                (loadingStatus == LoadingStatus.complete) ? album.name : strings.loading,
                 textScaleFactor: 1,
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodyMedium?.copyWith(
@@ -106,9 +107,7 @@ class _DrawerButtonChild extends StatelessWidget {
                 ),
               ),
             ),
-            if (isLoading)
-              const CupertinoActivityIndicator(radius: 8)
-            else
+            if (loadingStatus == LoadingStatus.complete)
               DecoratedBox(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
@@ -118,7 +117,9 @@ class _DrawerButtonChild extends StatelessWidget {
                   turns: Tween<double>(begin: 0.0, end: 0.5).animate(controller),
                   child: const Icon(Icons.expand_more, size: 20),
                 ),
-              ),
+              )
+            else
+              const CupertinoActivityIndicator(radius: 8)
           ],
         );
       },
