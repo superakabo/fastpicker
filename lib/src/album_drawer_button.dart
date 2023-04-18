@@ -93,35 +93,37 @@ class _DrawerButtonChild extends StatelessWidget {
     return ValueListenableBuilder<AlbumModel>(
       valueListenable: selectedAlbumRef,
       builder: (context, album, child) {
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 4, right: 8),
-              child: Text(
-                (loadingStatus == LoadingStatus.complete) ? album.name : strings.loading,
-                textScaleFactor: 1,
-                textAlign: TextAlign.center,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-            if (loadingStatus == LoadingStatus.complete)
-              DecoratedBox(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: theme.colorScheme.tertiaryContainer,
-                ),
-                child: RotationTransition(
-                  turns: Tween<double>(begin: 0.0, end: 0.5).animate(controller),
-                  child: const Icon(Icons.expand_more, size: 20),
-                ),
-              )
-            else
-              const CupertinoActivityIndicator(radius: 8)
-          ],
-        );
+        return (album.name.isEmpty)
+            ? const SizedBox.shrink()
+            : Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 4, right: 8),
+                    child: Text(
+                      (loadingStatus == LoadingStatus.complete) ? album.name : strings.loading,
+                      textScaleFactor: 1,
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  if (loadingStatus == LoadingStatus.complete)
+                    DecoratedBox(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: theme.colorScheme.tertiaryContainer,
+                      ),
+                      child: RotationTransition(
+                        turns: Tween<double>(begin: 0.0, end: 0.5).animate(controller),
+                        child: const Icon(Icons.expand_more, size: 20),
+                      ),
+                    )
+                  else
+                    const CupertinoActivityIndicator(radius: 8)
+                ],
+              );
       },
     );
   }
