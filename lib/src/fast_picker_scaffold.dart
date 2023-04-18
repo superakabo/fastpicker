@@ -33,7 +33,7 @@ class FastPickerScaffold extends HookWidget {
     const duration = Duration(milliseconds: 250);
     const reverseDuration = Duration(milliseconds: 200);
 
-    final albumsRef = useValueNotifier(<AlbumModel>[]);
+    final albumsRef = useState(<AlbumModel>[]);
     final selectedAlbumRef = useValueNotifier(AlbumModel());
     final selectedMediaRef = useValueNotifier(List.of(selectedAssets));
     final mediaCountRef = useValueNotifier(-1);
@@ -99,6 +99,7 @@ class FastPickerScaffold extends HookWidget {
       albumsRef.value = List.of(albumsRef.value);
     }
 
+    /// Mark: load albums when permission is granted or limited (iOS)
     useEffect(() {
       if (hasPermission) loadAlbums();
       return;
@@ -161,9 +162,8 @@ class FastPickerScaffold extends HookWidget {
         title: Text(strings.selectMedia),
         bottom: FastPickerToolbar(
           strings: strings,
-          visible: hasPermission,
+          visible: hasPermission && albumsRef.value.isNotEmpty,
           selectedAlbumRef: selectedAlbumRef,
-          mediaCountRef: mediaCountRef,
           albumController: albumController,
           multiSelectController: multiSelectController,
         ),
@@ -189,7 +189,7 @@ class FastPickerScaffold extends HookWidget {
                   strings: strings,
                 ),
                 AlbumListView(
-                  albumsRef: albumsRef,
+                  albums: albumsRef.value,
                   selectedAlbumRef: selectedAlbumRef,
                   controller: albumController,
                   physics: physics,

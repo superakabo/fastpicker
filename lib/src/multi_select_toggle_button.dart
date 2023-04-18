@@ -54,12 +54,21 @@ class MultiSelectToggleButton extends StatelessWidget {
         ),
       ),
       builder: (context, child) {
-        return Material(
-          shape: const CircleBorder(),
-          color: theme.colorScheme.tertiaryContainer.withOpacity(
-            math.max(0.2, (controller.value / 1)),
+        return ValueListenableBuilder<AlbumModel>(
+          valueListenable: selectedAlbumRef,
+          builder: (context, album, child) {
+            return Visibility(
+              visible: (album.assetCount > 0),
+              child: child!,
+            );
+          },
+          child: Material(
+            shape: const CircleBorder(),
+            color: theme.colorScheme.tertiaryContainer.withOpacity(
+              math.max(0.2, (controller.value / 1)),
+            ),
+            child: child,
           ),
-          child: child,
         );
       },
     );
