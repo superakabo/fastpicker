@@ -80,7 +80,7 @@ class FastPickerScaffold extends HookWidget {
       albumsRef.value.clear();
       final assetPathEntities = await PhotoManager.getAssetPathList();
 
-      for (var assetPathEntity in assetPathEntities) {
+      await Future.forEach(assetPathEntities, (assetPathEntity) async {
         albumsRef.value.add(AlbumModel.raw(
           id: assetPathEntity.id,
           name: assetPathEntity.name,
@@ -95,7 +95,7 @@ class FastPickerScaffold extends HookWidget {
         if (assetPathEntity.id != selectedAlbumRef.value.id) {
           selectedAlbumRef.value = albumsRef.value.first;
         }
-      }
+      });
 
       albumsRef.value = List.of(albumsRef.value);
       loadingStatusRef.value = LoadingStatus.complete;
