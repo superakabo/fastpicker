@@ -1,6 +1,7 @@
 import 'package:fastpicker/src/no_media_view.dart';
 import 'package:fastpicker/src/utilities/enums/loading_status.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 import 'models/album_model.dart';
@@ -8,7 +9,7 @@ import 'selection_indicator.dart';
 import 'utilities/fast_picker_strings.dart';
 import 'video_indicator.dart';
 
-class MediaGridView extends StatelessWidget {
+class MediaGridView extends HookWidget {
   final AnimationController controller;
   final ScrollPhysics? physics;
   final ValueNotifier<AlbumModel> selectedAlbumRef;
@@ -32,42 +33,34 @@ class MediaGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<AlbumModel>(
-      valueListenable: selectedAlbumRef,
-      builder: (_, album, __) {
-        return ValueListenableBuilder<LoadingStatus>(
-          valueListenable: loadingStatusRef,
-          builder: (context, loadingStatus, child) {
-            switch (loadingStatus) {
-              case LoadingStatus.complete:
-                return (album.assetCount == 0)
-                    ? NoMediaView(strings: strings)
-                    : GridView.builder(
-                        physics: physics,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 4,
-                          mainAxisSpacing: 1,
-                          crossAxisSpacing: 1,
-                        ),
-                        itemCount: album.assets.length,
-                        itemBuilder: (context, index) {
-                          return _GridRow(
-                            controller: controller,
-                            selectedMediaRef: selectedMediaRef,
-                            mediaAsset: album.assets[index],
-                            maxSelection: maxSelection,
-                            onComplete: onComplete,
-                          );
-                        },
-                      );
+    final selectedAlbum = useValueListenable(selectedAlbumRef);
+    final loadingStatus = useValueListenable(loadingStatusRef);
+    final loadingComplete = (loadingStatus == LoadingStatus.complete);
 
-              default:
-                return const SizedBox.shrink();
-            }
-          },
-        );
-      },
-    );
+    if (loadingComplete) {
+      return (selectedAlbum.assetCount == 0)
+          ? NoMediaView(strings: strings)
+          : GridView.builder(
+              physics: physics,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4,
+                mainAxisSpacing: 1,
+                crossAxisSpacing: 1,
+              ),
+              itemCount: selectedAlbum.assets.length,
+              itemBuilder: (context, index) {
+                return _GridRow(
+                  controller: controller,
+                  selectedMediaRef: selectedMediaRef,
+                  mediaAsset: selectedAlbum.assets[index],
+                  maxSelection: maxSelection,
+                  onComplete: onComplete,
+                );
+              },
+            );
+    }
+
+    return const SizedBox.shrink();
   }
 }
 
