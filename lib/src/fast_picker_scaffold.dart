@@ -30,7 +30,6 @@ class FastPickerScaffold extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('reloaded');
     const duration = Duration(milliseconds: 250);
     const reverseDuration = Duration(milliseconds: 200);
 
