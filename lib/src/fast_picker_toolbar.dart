@@ -47,5 +47,5 @@ class FastPickerToolbar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(visible ? 48 : 0);
+  Size get preferredSize => const Size.fromHeight(48);
 }

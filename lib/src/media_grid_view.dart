@@ -33,7 +33,7 @@ class MediaGridView extends StatelessWidget {
       valueListenable: selectedAlbumRef,
       builder: (_, album, __) {
         return Visibility(
-          visible: (album.name.isNotEmpty && album.assetCount > 0),
+          visible: (album.assetCount > 0),
           replacement: NoMediaView(
             strings: strings,
           ),
