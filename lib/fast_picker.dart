@@ -13,7 +13,7 @@ class FastPicker extends StatelessWidget {
   final FastPickerStrings strings;
   final int maxSelection;
   final ScrollPhysics? physics;
-  final List<AssetEntity> selectedAssets;
+  final List<String> selectedAssets;
   final void Function(List<AssetEntity>)? onComplete;
 
   const FastPicker({
@@ -39,7 +39,7 @@ class FastPicker extends StatelessWidget {
       ),
       child: FastPickerScaffold(
         maxSelection: maxSelection,
-        selectedAssets: selectedAssets,
+        selectedAssetIds: selectedAssets,
         onComplete: onComplete,
         physics: physics,
         strings: strings,

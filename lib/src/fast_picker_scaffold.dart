@@ -17,13 +17,13 @@ class FastPickerScaffold extends HookWidget {
   final FastPickerStrings strings;
   final int maxSelection;
   final ScrollPhysics? physics;
-  final List<AssetEntity> selectedAssets;
+  final List<String> selectedAssetIds;
   final void Function(List<AssetEntity>)? onComplete;
 
   const FastPickerScaffold({
     required this.strings,
     required this.maxSelection,
-    required this.selectedAssets,
+    required this.selectedAssetIds,
     required this.onComplete,
     required this.physics,
     super.key,
@@ -36,12 +36,13 @@ class FastPickerScaffold extends HookWidget {
 
     final albumsRef = useValueNotifier(<AlbumModel>[]);
     final selectedAlbumRef = useValueNotifier(AlbumModel());
-    final selectedMediaRef = useValueNotifier(List.of(selectedAssets));
+    final selectedMediaRef = useValueNotifier(<AssetEntity>[]);
     final loadingStatusRef = useValueNotifier(LoadingStatus.indeterminate);
 
     final multiSelectController = useAnimationController(
       duration: duration,
       reverseDuration: reverseDuration,
+      initialValue: selectedAssetIds.isEmpty ? 0 : 1,
     );
 
     final albumController = useAnimationController(
@@ -100,6 +101,19 @@ class FastPickerScaffold extends HookWidget {
       albumsRef.value = List.of(albumsRef.value);
       loadingStatusRef.value = LoadingStatus.complete;
     }
+
+    /// Mark: load previously selected assets using their ids
+    useEffect(() {
+      final assetEntities = <AssetEntity>[];
+
+      Future.forEach(selectedAssetIds, (id) async {
+        final tmp = await AssetEntity.fromId(id);
+        final exists = (await tmp?.exists) ?? false;
+        if (exists) assetEntities.add(tmp!);
+      }).whenComplete(() => selectedMediaRef.value = assetEntities);
+
+      return;
+    }, [hasPermission]);
 
     /// Mark: load albums when permission is granted or limited (iOS)
     useEffect(() {

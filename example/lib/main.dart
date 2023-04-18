@@ -24,11 +24,8 @@ class MyApp extends StatelessWidget {
           return FastPicker(
             theme: Theme.of(context),
             onComplete: (assets) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Selected Media count: ${assets.length}'),
-                ),
-              );
+              final text = 'Selected Media count: ${assets.length}\n${assets.map((e) => e.id)}';
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
             },
           );
         },
