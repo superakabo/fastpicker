@@ -79,12 +79,13 @@ class FastPickerScaffold extends HookWidget {
       // TODO: filter out empty albums when this issue is resolved
       // https://github.com/fluttercandies/flutter_photo_manager/issues/910
 
-      loadingStatusRef.value = LoadingStatus.loading;
-      albumsRef.value.clear();
-      final assetPathEntities = await PhotoManager.getAssetPathList();
+      if (albumsRef.value.isEmpty) {
+        loadingStatusRef.value = LoadingStatus.loading;
+      }
 
-      await Future.forEach(assetPathEntities, (assetPathEntity) async {
-        albumsRef.value.add(AlbumModel.raw(
+      final assetPathEntities = await PhotoManager.getAssetPathList();
+      final albumsFuture = assetPathEntities.map((assetPathEntity) async {
+        return AlbumModel.raw(
           id: assetPathEntity.id,
           name: assetPathEntity.name,
           albumType: assetPathEntity.albumType,
@@ -93,33 +94,47 @@ class FastPickerScaffold extends HookWidget {
           thumbnail: await assetPathEntity.thumbnail,
           assets: await assetPathEntity.assetEntities,
           assetCount: await assetPathEntity.assetCountAsync,
-        ));
-
-        if (assetPathEntity.id != selectedAlbumRef.value.id) {
-          selectedAlbumRef.value = albumsRef.value.first;
-        }
+        );
       });
 
-      albumsRef.value = List.of(albumsRef.value);
-      loadingStatusRef.value = LoadingStatus.complete;
+      albumsRef.value = await Future.wait(albumsFuture);
+
+      /// Mark: set default selected album to Recent(s)
+      /// or update current album with media changes
+      if (albumsRef.value.isNotEmpty) {
+        if (selectedAlbumRef.value.id.isEmpty) {
+          selectedAlbumRef.value = albumsRef.value.first;
+        } else {
+          selectedAlbumRef.value = albumsRef.value.firstWhere(
+            (e) => (e.id == selectedAlbumRef.value.id),
+            orElse: () => albumsRef.value.first,
+          );
+        }
+      }
+
+      if (loadingStatusRef.value == LoadingStatus.loading) {
+        loadingStatusRef.value = LoadingStatus.complete;
+      }
     }
 
     /// Mark: load previously selected assets using their ids
-    useEffect(() {
+    Future<void> loadPreviouslySelectedAssets() async {
       final assetEntities = <AssetEntity>[];
-
-      Future.forEach(selectedAssetIds, (id) async {
+      await Future.forEach(selectedAssetIds, (id) async {
         final tmp = await AssetEntity.fromId(id);
         final exists = (await tmp?.exists) ?? false;
         if (exists) assetEntities.add(tmp!);
-      }).whenComplete(() => selectedMediaRef.value = assetEntities);
+      });
+      selectedMediaRef.value = assetEntities;
+    }
 
-      return;
-    }, [hasPermission]);
-
-    /// Mark: load albums when permission is granted or limited (iOS)
+    /// Mark: start loading albums and previously selected assets
+    /// when permission is granted or limited (iOS)
     useEffect(() {
-      if (hasPermission) loadAlbums();
+      if (hasPermission) {
+        loadAlbums();
+        loadPreviouslySelectedAssets();
+      }
       return;
     }, [hasPermission]);
 
