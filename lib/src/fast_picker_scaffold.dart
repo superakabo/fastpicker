@@ -33,6 +33,7 @@ class FastPickerScaffold extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final navigator = Navigator.of(context);
     const duration = Duration(milliseconds: 250);
     const reverseDuration = Duration(milliseconds: 200);
 
@@ -194,7 +195,6 @@ class FastPickerScaffold extends HookWidget {
     Widget? leadingWidget() {
       if (closeButton != null) return closeButton!;
 
-      final navigator = Navigator.of(context);
       if (navigator.canPop()) {
         return CloseButton(onPressed: () {
           onComplete?.call(selectedMediaRef.value);
@@ -205,63 +205,70 @@ class FastPickerScaffold extends HookWidget {
       return null;
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: leadingWidget(),
-        centerTitle: true,
-        title: Text(strings.selectMedia),
-        bottom: FastPickerToolbar(
-          strings: strings,
-          visible: hasPermission,
-          selectedAlbumRef: selectedAlbumRef,
-          loadingStatusRef: loadingStatusRef,
-          albumController: albumController,
-          multiSelectController: multiSelectController,
+    return WillPopScope(
+      onWillPop: () {
+        onComplete?.call(selectedMediaRef.value);
+        navigator.pop(selectedMediaRef.value);
+        return Future.value(true);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: leadingWidget(),
+          centerTitle: true,
+          title: Text(strings.selectMedia),
+          bottom: FastPickerToolbar(
+            strings: strings,
+            visible: hasPermission,
+            selectedAlbumRef: selectedAlbumRef,
+            loadingStatusRef: loadingStatusRef,
+            albumController: albumController,
+            multiSelectController: multiSelectController,
+          ),
         ),
-      ),
-      body: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          LimitedPermissionBanner(
-            strings: strings,
-            controller: permissionLimitedController,
-          ),
-          Expanded(
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                MediaGridView(
-                  controller: multiSelectController,
-                  selectedAlbumRef: selectedAlbumRef,
-                  selectedMediaRef: selectedMediaRef,
-                  loadingStatusRef: loadingStatusRef,
-                  maxSelection: maxSelection,
-                  onComplete: onComplete,
-                  physics: physics,
-                  strings: strings,
-                ),
-                AlbumListView(
-                  albumsRef: albumsRef,
-                  selectedAlbumRef: selectedAlbumRef,
-                  controller: albumController,
-                  physics: physics,
-                ),
-              ],
+        body: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            LimitedPermissionBanner(
+              strings: strings,
+              controller: permissionLimitedController,
             ),
-          ),
-          MultiSelectBanner(
-            strings: strings,
-            controller: multiSelectController,
-            selectedMediaRef: selectedMediaRef,
-            onComplete: onComplete,
-            physics: physics,
-          ),
-        ],
-      ),
-      bottomSheet: PermissionBottomSheet(
-        strings: strings,
-        permission: permission,
-        controller: permissionController,
+            Expanded(
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  MediaGridView(
+                    controller: multiSelectController,
+                    selectedAlbumRef: selectedAlbumRef,
+                    selectedMediaRef: selectedMediaRef,
+                    loadingStatusRef: loadingStatusRef,
+                    maxSelection: maxSelection,
+                    onComplete: onComplete,
+                    physics: physics,
+                    strings: strings,
+                  ),
+                  AlbumListView(
+                    albumsRef: albumsRef,
+                    selectedAlbumRef: selectedAlbumRef,
+                    controller: albumController,
+                    physics: physics,
+                  ),
+                ],
+              ),
+            ),
+            MultiSelectBanner(
+              strings: strings,
+              controller: multiSelectController,
+              selectedMediaRef: selectedMediaRef,
+              onComplete: onComplete,
+              physics: physics,
+            ),
+          ],
+        ),
+        bottomSheet: PermissionBottomSheet(
+          strings: strings,
+          permission: permission,
+          controller: permissionController,
+        ),
       ),
     );
   }
