@@ -77,9 +77,6 @@ class FastPickerScaffold extends HookWidget {
 
     /// Mark: load photos and videos in albums
     Future<void> loadAlbums() async {
-      // TODO: filter out empty albums when this issue is resolved
-      // https://github.com/fluttercandies/flutter_photo_manager/issues/910
-
       if (albumsRef.value.isEmpty) {
         loadingStatusRef.value = LoadingStatus.loading;
       }

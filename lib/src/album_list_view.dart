@@ -74,8 +74,6 @@ class _AlbumRow extends StatelessWidget {
                 isOriginal: false,
                 fit: BoxFit.cover,
               ),
-
-        // TODO: remove [ColoredBox(color: Colors.grey)] after filtering out empty albums
       ),
       title: Text(album.name),
       subtitle: Text(album.assetCount.toString()),

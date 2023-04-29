@@ -27,7 +27,7 @@ final assets = await Navigator.of(context).push(
 or use it as you would any widget
 
 ```dart
-FastPicker(
+child: FastPicker(
   theme: Theme.of(context),
   selectedAssets: [],
   strings: FastPickerStrings(),
@@ -38,9 +38,9 @@ FastPicker(
 Theme colorSchemes
 
 ```dart 
-    tertiaryContainer,
-    tertiary,
-    primaryContainer,
-    onPrimaryContainer,
-    onPrimary
+ tertiaryContainer,
+ tertiary,
+ primaryContainer,
+ onPrimaryContainer,
+ onPrimary
 ```
