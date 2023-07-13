@@ -13,6 +13,7 @@ export 'package:photo_manager/photo_manager.dart'
         AssetEntityImageProvider,
         AssetType,
         ThumbnailFormat,
+        ThumbnailSize,
         ResizeMode,
         ImageFileType;
 
