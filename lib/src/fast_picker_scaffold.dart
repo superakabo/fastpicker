@@ -20,6 +20,7 @@ class FastPickerScaffold extends HookWidget {
   final List<String> selectedAssetIds;
   final Widget? closeButton;
   final void Function(List<AssetEntity>)? onComplete;
+  final RequestType requestType;
 
   const FastPickerScaffold({
     required this.strings,
@@ -28,6 +29,7 @@ class FastPickerScaffold extends HookWidget {
     required this.onComplete,
     required this.physics,
     required this.closeButton,
+    required this.requestType,
     super.key,
   }) : assert(maxSelection > 0, 'max selection must be greater than or equal to 1');
 

@@ -15,6 +15,7 @@ export 'package:photo_manager/photo_manager.dart'
         ThumbnailFormat,
         ThumbnailSize,
         ResizeMode,
+        RequestType,
         ImageFileType;
 
 class FastPicker extends StatelessWidget {
@@ -24,6 +25,7 @@ class FastPicker extends StatelessWidget {
   final ScrollPhysics? physics;
   final List<String> selectedAssets;
   final Widget? closeButton;
+  final RequestType requestType;
   final void Function(List<AssetEntity>)? onComplete;
 
   const FastPicker({
@@ -34,6 +36,7 @@ class FastPicker extends StatelessWidget {
     this.onComplete,
     this.physics,
     this.closeButton,
+    this.requestType = RequestType.common,
     super.key,
   });
 
@@ -55,6 +58,7 @@ class FastPicker extends StatelessWidget {
         physics: physics,
         strings: strings,
         closeButton: closeButton,
+        requestType: requestType,
       ),
     );
   }
