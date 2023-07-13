@@ -6,7 +6,15 @@ import 'src/utilities/fast_picker_strings.dart';
 
 export 'src/utilities/fast_picker_strings.dart';
 export 'package:photo_manager/photo_manager.dart'
-    show AssetEntity, AssetPathEntity, AssetType, ThumbnailFormat, ResizeMode, ImageFileType;
+    show
+        AssetEntity,
+        AssetPathEntity,
+        AssetEntityImage,
+        AssetEntityImageProvider,
+        AssetType,
+        ThumbnailFormat,
+        ResizeMode,
+        ImageFileType;
 
 class FastPicker extends StatelessWidget {
   final ThemeData theme;
