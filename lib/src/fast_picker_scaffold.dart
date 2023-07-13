@@ -83,7 +83,8 @@ class FastPickerScaffold extends HookWidget {
         loadingStatusRef.value = LoadingStatus.loading;
       }
 
-      final assetPathEntities = await PhotoManager.getAssetPathList();
+      final assetPathEntities = await PhotoManager.getAssetPathList(type: requestType);
+
       final albumsFuture = assetPathEntities.map((assetPathEntity) async {
         return AlbumModel.raw(
           id: assetPathEntity.id,
