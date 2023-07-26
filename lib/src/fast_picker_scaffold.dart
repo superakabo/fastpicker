@@ -223,6 +223,7 @@ class FastPickerScaffold extends HookWidget {
             loadingStatusRef: loadingStatusRef,
             albumController: albumController,
             multiSelectController: multiSelectController,
+            maxSelection: maxSelection,
           ),
         ),
         body: Column(

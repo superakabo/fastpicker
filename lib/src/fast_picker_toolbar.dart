@@ -13,6 +13,7 @@ class FastPickerToolbar extends StatelessWidget implements PreferredSizeWidget {
   final ValueNotifier<LoadingStatus> loadingStatusRef;
   final FastPickerStrings strings;
   final bool visible;
+  final int maxSelection;
 
   const FastPickerToolbar({
     required this.albumController,
@@ -21,6 +22,7 @@ class FastPickerToolbar extends StatelessWidget implements PreferredSizeWidget {
     required this.loadingStatusRef,
     required this.visible,
     required this.strings,
+    required this.maxSelection,
     super.key,
   });
 
@@ -39,11 +41,12 @@ class FastPickerToolbar extends StatelessWidget implements PreferredSizeWidget {
               selectedAlbumRef: selectedAlbumRef,
               loadingStatusRef: loadingStatusRef,
             ),
-            MultiSelectToggleButton(
-              strings: strings,
-              controller: multiSelectController,
-              selectedAlbumRef: selectedAlbumRef,
-            ),
+            if (maxSelection > 1)
+              MultiSelectToggleButton(
+                strings: strings,
+                controller: multiSelectController,
+                selectedAlbumRef: selectedAlbumRef,
+              ),
           ],
         ),
       ),
