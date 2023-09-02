@@ -22,29 +22,33 @@ class SelectionIndicator extends StatelessWidget {
 
     return Semantics(
       selected: selected,
-      child: Align(
-        alignment: alignment,
-        child: AnimatedContainer(
-          width: visible ? 19 : 0,
-          height: visible ? 19 : 0,
-          margin: margin,
-          alignment: Alignment.center,
-          duration: const Duration(milliseconds: 180),
-          decoration: BoxDecoration(
-            color: selected ? theme.colorScheme.primary : Colors.transparent,
-            shape: BoxShape.circle,
-            border: Border.all(color: Colors.white),
-            boxShadow: const [
-              BoxShadow(
-                blurRadius: 0.5,
-                blurStyle: BlurStyle.outer,
+      child: AnimatedScale(
+        scale: visible ? 1 : 0,
+        duration: const Duration(milliseconds: 150),
+        child: Align(
+          alignment: alignment,
+          child: AnimatedContainer(
+            width: visible ? 19 : 0,
+            height: visible ? 19 : 0,
+            margin: margin,
+            alignment: Alignment.center,
+            duration: const Duration(milliseconds: 150),
+            decoration: BoxDecoration(
+              color: (selected) ? theme.colorScheme.primary : Colors.transparent,
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.white),
+              boxShadow: const [
+                BoxShadow(
+                  blurRadius: 0.5,
+                  blurStyle: BlurStyle.outer,
+                ),
+              ],
+            ),
+            child: Text(
+              selected ? counter.toString() : '',
+              style: theme.textTheme.labelSmall?.copyWith(
+                color: theme.colorScheme.onPrimary,
               ),
-            ],
-          ),
-          child: Text(
-            selected ? counter.toString() : '',
-            style: theme.textTheme.labelSmall?.copyWith(
-              color: theme.colorScheme.onPrimary,
             ),
           ),
         ),
