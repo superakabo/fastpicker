@@ -21,6 +21,7 @@ class FastPickerScaffold extends HookWidget {
   final Widget? closeButton;
   final void Function(List<AssetEntity>)? onComplete;
   final RequestType requestType;
+  final FilterOptionGroup? filterOption;
 
   const FastPickerScaffold({
     required this.strings,
@@ -30,6 +31,7 @@ class FastPickerScaffold extends HookWidget {
     required this.physics,
     required this.closeButton,
     required this.requestType,
+    required this.filterOption,
     super.key,
   }) : assert(maxSelection > 0, 'max selection must be greater than or equal to 1');
 
@@ -83,7 +85,10 @@ class FastPickerScaffold extends HookWidget {
         loadingStatusRef.value = LoadingStatus.loading;
       }
 
-      final assetPathEntities = await PhotoManager.getAssetPathList(type: requestType);
+      final assetPathEntities = await PhotoManager.getAssetPathList(
+        type: requestType,
+        filterOption: filterOption,
+      );
 
       final albumsFuture = assetPathEntities.map((assetPathEntity) async {
         return AlbumModel.raw(

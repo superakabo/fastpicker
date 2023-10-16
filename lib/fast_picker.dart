@@ -16,7 +16,14 @@ export 'package:photo_manager/photo_manager.dart'
         ThumbnailSize,
         ResizeMode,
         RequestType,
-        ImageFileType;
+        ImageFileType,
+        FilterOptionGroup,
+        CustomFilter,
+        FilterOption,
+        SizeConstraint,
+        DurationConstraint,
+        OrderOption,
+        DateTimeCond;
 
 class FastPicker extends StatelessWidget {
   final ThemeData theme;
@@ -27,6 +34,7 @@ class FastPicker extends StatelessWidget {
   final Widget? closeButton;
   final RequestType requestType;
   final void Function(List<AssetEntity>)? onComplete;
+  final FilterOptionGroup? filterOption;
 
   const FastPicker({
     required this.theme,
@@ -37,6 +45,7 @@ class FastPicker extends StatelessWidget {
     this.physics,
     this.closeButton,
     this.requestType = RequestType.common,
+    this.filterOption,
     super.key,
   });
 
@@ -59,6 +68,7 @@ class FastPicker extends StatelessWidget {
         strings: strings,
         closeButton: closeButton,
         requestType: requestType,
+        filterOption: filterOption,
       ),
     );
   }
