@@ -9,8 +9,6 @@ export 'package:photo_manager/photo_manager.dart'
     show
         AssetEntity,
         AssetPathEntity,
-        AssetEntityImage,
-        AssetEntityImageProvider,
         AssetType,
         ThumbnailFormat,
         ThumbnailSize,
@@ -24,6 +22,9 @@ export 'package:photo_manager/photo_manager.dart'
         DurationConstraint,
         OrderOption,
         DateTimeCond;
+
+export 'package:photo_manager_image_provider/photo_manager_image_provider.dart'
+    show AssetEntityImage, AssetEntityImageProvider;
 
 class FastPicker extends StatelessWidget {
   final ThemeData theme;
