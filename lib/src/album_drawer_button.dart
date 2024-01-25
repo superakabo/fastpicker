@@ -64,7 +64,7 @@ class AlbumDrawerButton extends HookWidget {
                       padding: const EdgeInsets.only(left: 4, right: 8),
                       child: Text(
                         (loadingComplete) ? selectedAlbum.name : strings.loading,
-                        textScaleFactor: 1,
+                        textScaler: TextScaler.noScaling,
                         textAlign: TextAlign.center,
                         style: theme.textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w600,

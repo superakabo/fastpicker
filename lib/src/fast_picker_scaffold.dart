@@ -210,11 +210,11 @@ class FastPickerScaffold extends HookWidget {
       return null;
     }
 
-    return WillPopScope(
-      onWillPop: () {
+    return PopScope(
+      canPop: true,
+      onPopInvoked: (didPop) {
         onComplete?.call(selectedMediaRef.value);
         navigator.pop(selectedMediaRef.value);
-        return Future.value(true);
       },
       child: Scaffold(
         appBar: AppBar(
