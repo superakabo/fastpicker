@@ -195,16 +195,22 @@ class FastPickerScaffold extends HookWidget {
       return null;
     }, [hasPermission]);
 
+    void onPop() {
+      onComplete?.call(selectedMediaRef.value);
+      return navigator.pop(selectedMediaRef.value);
+    }
+
     /// Mark: Adds a leading widget to the AppBar.
     /// It defaults to the the CloseButton widget;
     Widget? leadingWidget() {
-      if (closeButton != null) return closeButton!;
+      if (closeButton != null) {
+        return closeButton;
+      }
 
       if (navigator.canPop()) {
-        return CloseButton(onPressed: () {
-          onComplete?.call(selectedMediaRef.value);
-          navigator.pop(selectedMediaRef.value);
-        });
+        return CloseButton(
+          onPressed: onPop,
+        );
       }
 
       return null;
@@ -213,8 +219,8 @@ class FastPickerScaffold extends HookWidget {
     return PopScope(
       canPop: true,
       onPopInvoked: (didPop) {
-        onComplete?.call(selectedMediaRef.value);
-        navigator.pop(selectedMediaRef.value);
+        if (didPop) return;
+        return onPop();
       },
       child: Scaffold(
         appBar: AppBar(
